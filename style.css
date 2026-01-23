@@ -15,6 +15,16 @@
     --text-secondary: #6b7280;
     --border: #e5e7eb;
     --shadow: rgba(0, 0, 0, 0.05);
+
+    /* Agenda Specific */
+    --hour-height: 60px;
+    --work-color: #dbeafe;
+    --work-text: #1d4ed8;
+    --personal-color: #dcfce7;
+    --personal-text: #15803d;
+    --urgent-color: #fee2e2;
+    --urgent-text: #b91c1c;
+    --time-col-width: 80px;
 }
 
 body {
@@ -22,6 +32,7 @@ body {
     background: var(--bg);
     color: var(--text);
     line-height: 1.6;
+    padding-top: 80px; 
 }
 
 h1,h2,h3 {
@@ -125,11 +136,260 @@ h1,h2,h3 {
     box-shadow: 0 8px 20px rgba(217, 119, 6, 0.4);
 }
 
+/* Presentation Section */
+.presentation {
+    padding: 60px 0;
+}
+
+.presentation-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    background: white;
+    padding: 40px;
+    border-radius: 24px;
+    border: 1px none var(--border);
+    margin-bottom: 24px;
+}
+
+.presentation-content h1 {
+    font-size: 42px;
+    margin-bottom: 16px;
+    background: linear-gradient(to right, var(--text), var(--primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.presentation-img {
+    color: var(--primary-light);
+    opacity: 0.8;
+}
+
+/* Agenda Presentation UI */
+.agenda-presentation {
+    padding-bottom: 80px;
+}
+
+.agenda-presentation-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.agenda-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.agenda-presentation-ui-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    padding: 8px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.nav-arrow {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 4px;
+    font-size: 14px;
+}
+
+.nav-arrow:hover {
+    color: var(--primary);
+}
+
+.agenda-presentation-WEEKS p {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+/* Agenda Grid & Card */
+.agenda-main-card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    /* Assure que l'en-tête et le corps sont alignés même avec la barre de défilement */
+    scrollbar-gutter: stable;
+}
+
+.agenda-days-grid {
+    display: grid;
+    /* La grille doit correspondre exactement à celle du corps */
+    grid-template-columns: var(--time-col-width) repeat(7, 1fr);
+    background: #f9fafb;
+    border-bottom: 1px solid var(--border);
+    width: 100%;
+}
+
+.time-label-spacer {
+    width: var(--time-col-width);
+}
+
+.day-col-header {
+    padding: 16px 8px;
+    text-align: center;
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.day-col-header span {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.day-col-header strong {
+    font-size: 18px;
+}
+
+.day-col-header.active {
+    color: var(--primary);
+    background: #eff6ff;
+}
+
+.day-col-header.weekend {
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+.agenda-body-scroll {
+    height: 600px;
+    overflow-y: auto;
+    position: relative;
+    /* Pour forcer l'alignement avec l'en-tête si scrollbar stable est utilisé au dessus */
+}
+
+.agenda-time-grid {
+    display: grid;
+    grid-template-columns: var(--time-col-width) 1fr;
+    position: relative;
+    min-height: 100%;
+}
+
+.time-column {
+    background: #f9fafb;
+    border-right: 1px solid var(--border);
+}
+
+.hour-slot {
+    height: var(--hour-height);
+    padding: 8px;
+    text-align: right;
+    font-size: 11px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid #f3f4f6;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+
+.days-container {
+    position: relative;
+    background: white;
+    display: grid;
+    /* On recrée les 7 colonnes pour un alignement parfait */
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.grid-lines {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+}
+
+.grid-line-row {
+    height: var(--hour-height);
+    border-bottom: 1px solid #f3f4f6;
+    width: 100%;
+}
+
+/* Lignes verticales pour séparer les jours dans le corps */
+.grid-line-col {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid #f3f4f6;
+    pointer-events: none;
+}
+
+/* Events */
+.event-entry {
+    position: absolute;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 11px;
+    border-left: 4px solid;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    z-index: 5;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.event-entry:hover {
+    transform: scale(1.02);
+    z-index: 10;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.event-title {
+    display: block;
+    font-weight: 800;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.event-time {
+    font-size: 10px;
+    opacity: 0.8;
+}
+
+.now-indicator {
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-top: 2px solid #ef4444;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.now-indicator::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: -5px;
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
+    border-radius: 50%;
+}
 
 /* Footer */
 .footer {
     padding: 48px 0;
     border-top: 1px solid var(--border);
+    margin-top: 40px;
 }
 
 .footer-content {
@@ -179,5 +439,13 @@ h1,h2,h3 {
     .footer-content {
         flex-direction: column;
         text-align: center;
+    }
+
+    .day-col-header span {
+        display: none;
+    }
+
+    .agenda-body-scroll {
+        height: 450px;
     }
 }
