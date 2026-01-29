@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "BarberBookMobile"
+rootProject.name = "NomadTifMobile"
 include(":app")

@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.barberbook.mobile"
+    namespace = "com.nomadtif.mobile"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.barberbook.mobile"
+        applicationId = "com.nomadtif.mobile"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

@@ -1,4 +1,4 @@
-package com.barberbook.mobile
+package com.nomadtif.mobile
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
