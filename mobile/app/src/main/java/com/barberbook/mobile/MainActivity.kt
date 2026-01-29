@@ -44,7 +44,15 @@ interface BarberApi {
     suspend fun deleteSlot(@Path("id") id: Long)
 }
 
-data class Appointment(val clientFirstName: String, val clientName: String, val serviceName: String, val timeSlot: String, val price: Double)
+data class Appointment(
+    val clientFirstName: String, 
+    val clientName: String, 
+    val phoneNumber: String,
+    val serviceName: String, 
+    val timeSlot: String, 
+    val date: String,
+    val price: Double
+)
 data class ServiceItem(val id: Long = 0, val name: String, val price: Double)
 data class SlotItem(val id: Long = 0, val time: String)
 
@@ -101,7 +109,11 @@ fun AdminDashboard(api: BarberApi) {
         Text("Dernières réservations :", style = MaterialTheme.typography.titleMedium)
         LazyColumn {
             items(appointments) { rdv ->
-                ListItem(headlineContent = { Text("${rdv.clientFirstName} ${rdv.clientName}") }, supportingContent = { Text("${rdv.serviceName} - ${rdv.timeSlot}") })
+                ListItem(
+                    headlineContent = { Text("${rdv.clientFirstName} ${rdv.clientName}") },
+                    supportingContent = { Text("${rdv.serviceName} - ${rdv.date} à ${rdv.timeSlot}") },
+                    trailingContent = { Text(rdv.phoneNumber, style = MaterialTheme.typography.bodySmall) }
+                )
                 HorizontalDivider()
             }
         }
