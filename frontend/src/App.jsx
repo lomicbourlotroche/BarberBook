@@ -2,30 +2,28 @@ import React, { useState, useEffect } from 'react';
 
 // ANALOGIE : App.jsx est le "Manager" qui décide quelle page montrer au client.
 function App() {
-  const [step, setStep] = useState(0); // 0=Home, 1=Form, 2=Services, 3=Agenda, 4=Cancel
-  const [appointments, setAppointments] = useState([]);
+  const [step, setStep] = useState(0);
+  const [services, setServices] = useState([]);
+  const [slots, setSlots] = useState([]);
   const [formData, setFormData] = useState({
     clientName: '',
     clientFirstName: '',
     phoneNumber: '',
     serviceName: '',
-    date: '2024-02-01',
+    date: new Date().toISOString().split('T')[0],
     timeSlot: '',
-    price: 25.0
+    price: 0.0
   });
 
-  const slots = ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00"];
-  const services = [
-    { name: "Coupe Classique", price: 20 },
-    { name: "Barbe Traditionnelle", price: 15 },
-    { name: "Pack Royal (Coupe + Barbe)", price: 30 }
-  ];
-
-  // ANALOGIE : Fetch est le "Téléphone" qui appelle le Backend.
+  // ANALOGIE : Fetch est le "Téléphone" qui appelle le Backend pour les infos du jour.
   useEffect(() => {
-    fetch('http://localhost:8080/api/rendezvous')
+    fetch('http://localhost:8080/api/config/services')
       .then(res => res.json())
-      .then(data => setAppointments(data));
+      .then(data => setServices(data));
+
+    fetch('http://localhost:8080/api/config/slots')
+      .then(res => res.json())
+      .then(data => setSlots(data));
   }, []);
 
   const handleBooking = () => {
@@ -34,90 +32,113 @@ function App() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
     }).then(() => {
-      alert("⚠️ Rappel : Toute suppression doit se faire 48h avant le RDV !");
+      alert("✅ Rendez-vous confirmé ! ⚠️ Rappel : Suppression obligatoire 48h avant.");
       setStep(0);
     });
   };
 
   const handleCancel = (phone) => {
     if (!phone) return alert("Veuillez entrer votre numéro.");
-
-    fetch(`http://localhost:8080/api/rendezvous/${phone}`, {
-      method: 'DELETE'
-    })
+    fetch(`http://localhost:8080/api/rendezvous/${phone}`, { method: 'DELETE' })
       .then(res => res.json())
       .then(data => {
-        if (data.status === 'success') {
-          alert(data.message);
-          setStep(0);
-        } else {
-          alert(data.message);
-        }
+        alert(data.message);
+        if (data.status === 'success') setStep(0);
       });
   };
 
+  const selectPreSlot = (time) => {
+    setFormData({ ...formData, timeSlot: time });
+    setStep(1);
+  };
+
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial' }}>
-      <h1>💈 BarberBook</h1>
+    <div className="container">
+      <header>
+        <h1>💈 BarberBook</h1>
+        <p className="subtitle">L'excellence du style à votre portée</p>
+      </header>
 
       {step === 0 && (
-        <section>
-          <h2>Bienvenue au Salon</h2>
-          <p>Voici nos créneaux aujourd'hui :</p>
-          <div style={{ display: 'flex', gap: '10px' }}>
-            {slots.map(s => (
-              <button key={s} onClick={() => setStep(1)} style={{ padding: '10px' }}>{s}</button>
-            ))}
+        <section className="presentation">
+          <div className="bio">
+            <h2>Notre Salon</h2>
+            <p>Bienvenue chez BarberBook, où la tradition rencontre la modernité. Nos experts barbiers vous accueillent pour une expérience unique de soin et de style.</p>
           </div>
-          <br />
-          <button onClick={() => setStep(1)} style={{ background: 'gold', padding: '15px' }}>Prendre un RDV</button>
-          <hr />
-          <button onClick={() => setStep(4)}>Annuler un RDV existant</button>
+
+          <div className="agenda-preview">
+            <h3>Disponibilités du jour</h3>
+            <p className="hint">Cliquez sur un créneau pour réserver immédiatement</p>
+            <div className="grid-slots">
+              {slots.length > 0 ? slots.map(s => (
+                <button key={s.id} className="slot-btn" onClick={() => selectPreSlot(s.time)}>{s.time}</button>
+              )) : <p>Aucun créneau disponible pour le moment.</p>}
+            </div>
+          </div>
+
+          <button className="primary-btn" onClick={() => setStep(1)}>Prendre un rendez-vous</button>
+          <button className="secondary-btn" onClick={() => setStep(4)}>Annuler un RDV</button>
         </section>
       )}
 
       {step === 1 && (
-        <section>
+        <section className="card">
           <h2>Étape 1 : Vos Informations</h2>
-          <input placeholder="Nom" onChange={e => setFormData({ ...formData, clientName: e.target.value })} /><br />
-          <input placeholder="Prénom" onChange={e => setFormData({ ...formData, clientFirstName: e.target.value })} /><br />
-          <input placeholder="Téléphone" onChange={e => setFormData({ ...formData, phoneNumber: e.target.value })} /><br />
-          <button onClick={() => setStep(2)}>Suivant</button>
+          <div className="form-group">
+            <input placeholder="Votre Nom" onChange={e => setFormData({ ...formData, clientName: e.target.value })} />
+            <input placeholder="Votre Prénom" onChange={e => setFormData({ ...formData, clientFirstName: e.target.value })} />
+            <input placeholder="Numéro de Téléphone" onChange={e => setFormData({ ...formData, phoneNumber: e.target.value })} />
+          </div>
+          <button className="primary-btn" onClick={() => setStep(2)}>Choisir une prestation</button>
+          <button className="text-btn" onClick={() => setStep(0)}>Retour</button>
         </section>
       )}
 
       {step === 2 && (
-        <section>
-          <h2>Étape 2 : Votre Formule</h2>
-          {services.map(s => (
-            <button key={s.name} onClick={() => {
-              setFormData({ ...formData, serviceName: s.name, price: s.price });
-              setStep(3);
-            }}>
-              {s.name} - {s.price}€
-            </button>
-          ))}
+        <section className="card">
+          <h2>Étape 2 : Votre Prestation</h2>
+          <div className="prestation-list">
+            {services.map(s => (
+              <div key={s.id} className="prestation-item" onClick={() => {
+                setFormData({ ...formData, serviceName: s.name, price: s.price });
+                setStep(3);
+              }}>
+                <span>{s.name}</span>
+                <span className="price">{s.price}€</span>
+              </div>
+            ))}
+          </div>
+          <button className="text-btn" onClick={() => setStep(1)}>Retour</button>
         </section>
       )}
 
       {step === 3 && (
-        <section>
-          <h2>Étape 3 : Choisissez le Créneau</h2>
-          {slots.map(s => (
-            <button key={s} onClick={() => {
-              setFormData({ ...formData, timeSlot: s });
-              handleBooking();
-            }}>{s}</button>
-          ))}
+        <section className="card">
+          <h2>Étape 3 : Confirmer le Créneau</h2>
+          <p>Vous avez choisi : <strong>{formData.serviceName}</strong></p>
+          <div className="grid-slots">
+            {slots.map(s => (
+              <button
+                key={s.id}
+                className={`slot-btn ${formData.timeSlot === s.time ? 'selected' : ''}`}
+                onClick={() => setFormData({ ...formData, timeSlot: s.time })}
+              >
+                {s.time}
+              </button>
+            ))}
+          </div>
+          <button className="primary-btn" disabled={!formData.timeSlot} onClick={handleBooking}>Confirmer le RDV</button>
+          <button className="text-btn" onClick={() => setStep(2)}>Retour</button>
         </section>
       )}
 
       {step === 4 && (
-        <section>
+        <section className="card">
           <h2>Annulation</h2>
-          <p>Entrez votre téléphone pour supprimer votre RDV :</p>
-          <input placeholder="Téléphone" id="phoneCancel" />
-          <button onClick={() => handleCancel(document.getElementById('phoneCancel').value)}>Valider la suppression</button>
+          <p>Entrez votre numéro de téléphone pour annuler votre rendez-vous :</p>
+          <input placeholder="Numéro de téléphone" id="phoneCancel" />
+          <button className="danger-btn" onClick={() => handleCancel(document.getElementById('phoneCancel').value)}>Confirmer la suppression</button>
+          <button className="text-btn" onClick={() => setStep(0)}>Retour</button>
         </section>
       )}
     </div>

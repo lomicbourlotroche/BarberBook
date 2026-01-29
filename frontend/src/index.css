@@ -1,81 +1,170 @@
 :root {
-  --primary: #d4af37; /* Gold */
-  --secondary: #1a1a1a;
-  --bg: #0f0f0f;
-  --text: #ffffff;
-  --glass: rgba(255, 255, 255, 0.05);
+  --primary: #d4af37;
+  --primary-dark: #b8860b;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text-main: #2d3436;
+  --text-light: #636e72;
+  --border: #dfe6e9;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 body {
   margin: 0;
   padding: 0;
   background-color: var(--bg);
-  color: var(--text);
+  color: var(--text-main);
   font-family: 'Outfit', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-#root {
+.container {
   max-width: 600px;
   margin: 0 auto;
-  min-height: 100vh;
   padding: 40px 20px;
 }
 
-h1 {
-  font-size: 3rem;
-  font-weight: 700;
+header {
   text-align: center;
-  margin-bottom: 2rem;
-  background: linear-gradient(to right, #fff, var(--primary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  margin-bottom: 3rem;
+}
+
+h1 {
+  font-size: 3.5rem;
+  margin: 0;
+  color: var(--text-main);
+  letter-spacing: -2px;
+}
+
+.subtitle {
+  color: var(--primary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
 }
 
 section {
-  background: var(--glass);
-  backdrop-filter: blur(10px);
-  padding: 2rem;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  animation: fadeIn 0.5s ease-out;
+  background: var(--card-bg);
+  padding: 2.5rem;
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-button {
-  width: 100%;
-  padding: 15px;
-  margin: 10px 0;
+h2 {
+  margin-top: 0;
+  font-size: 1.8rem;
+}
+
+h3 {
+  margin-top: 0;
+  color: var(--text-light);
+}
+
+.grid-slots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 1.5rem 0;
+}
+
+.slot-btn {
+  padding: 12px;
+  background: #f1f2f6;
+  border: 1px solid var(--border);
   border-radius: 12px;
-  border: none;
-  background: var(--secondary);
-  color: white;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+  color: var(--text-main);
 }
 
-button:hover {
+.slot-btn:hover {
   background: var(--primary);
-  color: #000;
+  border-color: var(--primary);
+  color: white;
+}
+
+.slot-btn.selected {
+  background: var(--text-main);
+  color: white;
+  border-color: var(--text-main);
+}
+
+.primary-btn {
+  width: 100%;
+  padding: 18px;
+  background: var(--text-main);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.primary-btn:hover {
+  background: var(--primary);
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
+.secondary-btn {
+  width: 100%;
+  padding: 15px;
+  background: transparent;
+  color: var(--text-light);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.danger-btn {
+  width: 100%;
+  padding: 18px;
+  background: #ff7675;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-weight: 700;
+}
+
+.text-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  margin-top: 10px;
 }
 
 input {
   width: 100%;
-  padding: 15px;
-  margin-bottom: 15px;
-  background: rgba(0,0,0,0.3);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
-  color: white;
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  font-size: 1rem;
   box-sizing: border-box;
 }
 
@@ -84,8 +173,32 @@ input:focus {
   border-color: var(--primary);
 }
 
-hr {
-  margin: 2rem 0;
-  border: none;
-  border-top: 1px solid rgba(255,255,255,0.1);
+.prestation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.prestation-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background: #f1f2f6;
+  border-radius: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.prestation-item:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.price {
+  color: var(--primary-dark);
+}
+
+.prestation-item:hover .price {
+  color: white;
 }
