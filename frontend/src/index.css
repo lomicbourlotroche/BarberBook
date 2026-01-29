@@ -1,12 +1,15 @@
 :root {
-  --primary: #d4af37;
-  --primary-dark: #b8860b;
-  --bg: #f8f9fa;
+  --primary: #2D4C3E;
+  /* Deep Forest Green */
+  --accent: #C07A50;
+  /* Terracotta */
+  --bg: #F9F7F2;
+  /* Cream/Off-White */
   --card-bg: #ffffff;
-  --text-main: #2d3436;
+  --text-main: #2D3436;
   --text-light: #636e72;
-  --border: #dfe6e9;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  --border: #e0e0e0;
+  --shadow: 0 10px 30px rgba(45, 76, 62, 0.05);
 }
 
 body {
@@ -30,10 +33,11 @@ header {
 }
 
 h1 {
+  font-family: 'Playfair Display', serif;
   font-size: 3.5rem;
   margin: 0;
-  color: var(--text-main);
-  letter-spacing: -2px;
+  color: var(--primary);
+  letter-spacing: -1px;
 }
 
 .subtitle {
@@ -196,7 +200,7 @@ input:focus {
 }
 
 .price {
-  color: var(--primary-dark);
+  color: var(--accent);
 }
 
 .prestation-item:hover .price {

@@ -55,19 +55,22 @@ function App() {
   return (
     <div className="container">
       <header>
-        <h1>💈 BarberBook</h1>
-        <p className="subtitle">L'excellence du style à votre portée</p>
+        <h1>🌿 Nomad'Tif</h1>
+        <p className="subtitle">Coiffure Nomade dans les Monts d'Arrée</p>
       </header>
 
       {step === 0 && (
         <section className="presentation">
           <div className="bio">
-            <h2>Notre Salon</h2>
-            <p>Bienvenue chez BarberBook, où la tradition rencontre la modernité. Nos experts barbiers vous accueillent pour une expérience unique de soin et de style.</p>
+            <h2>Bienvenue dans ma bulle de bien-être</h2>
+            <p>
+              Moi c'est <strong>Solène</strong>. Avec <em>Nomad'Tif</em>, je sillonne les routes des Monts d'Arrée avec ma caravane aménagée en salon de coiffure.
+              Je vous propose une expérience unique, naturelle et authentique, directement au cœur de nos villages.
+            </p>
           </div>
 
           <div className="agenda-preview">
-            <h3>Disponibilités du jour</h3>
+            <h3>Mes prochains passages</h3>
             <p className="hint">Cliquez sur un créneau pour réserver immédiatement</p>
             <div className="grid-slots">
               {slots.length > 0 ? slots.map(s => (

@@ -65,9 +65,9 @@ class MainActivity : ComponentActivity() {
             Scaffold(
                 bottomBar = {
                     NavigationBar {
-                        NavigationBarItem(selected = currentScreen == 0, onClick = { currentScreen = 0 }, icon = { Text("📊") }, label = { Text("CA") })
-                        NavigationBarItem(selected = currentScreen == 1, onClick = { currentScreen = 1 }, icon = { Text("✂️") }, label = { Text("Formules") })
-                        NavigationBarItem(selected = currentScreen == 2, onClick = { currentScreen = 2 }, icon = { Text("📅") }, label = { Text("Créneaux") })
+                        NavigationBarItem(selected = currentScreen == 0, onClick = { currentScreen = 0 }, icon = { Text("🏕️") }, label = { Text("Stats") })
+                        NavigationBarItem(selected = currentScreen == 1, onClick = { currentScreen = 1 }, icon = { Text("🌿") }, label = { Text("Prestations") })
+                        NavigationBarItem(selected = currentScreen == 2, onClick = { currentScreen = 2 }, icon = { Text("🗺️") }, label = { Text("Passages") })
                     }
                 }
             ) { padding ->
@@ -92,7 +92,10 @@ fun AdminDashboard(api: BarberApi) {
 
     Column(modifier = Modifier.padding(16.dp)) {
         Text("💰 Chiffre d'Affaires", style = MaterialTheme.typography.headlineMedium)
-        Card(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)) {
+        Card(
+            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFF2D4C3E), contentColor = Color.White)
+        ) {
             Text("$totalCA €", style = MaterialTheme.typography.displayMedium, modifier = Modifier.padding(24.dp))
         }
         Text("Dernières réservations :", style = MaterialTheme.typography.titleMedium)
